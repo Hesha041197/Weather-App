@@ -55,6 +55,17 @@ pipeline {
             }
         }
 
+        // Stage 3.5: Fix Private Key Permissions
+        stage('Fix Private Key Permissions') {
+            steps {
+                script {
+                    sh "chmod 600 ./private_keys/m01/private_key"
+                    sh "chmod 600 ./private_keys/m02/private_key"
+                    // Set permissions to 600 for both private key files
+                }
+            }
+        }
+
         // Stage 4: Run Ansible Playbook
         stage('Run Ansible Playbook') {
             steps {
