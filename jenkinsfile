@@ -81,14 +81,26 @@ pipeline {
 
     post {
         success {
-            emailext subject: "Jenkins Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     body: "Good news! The build succeeded. View details: ${env.BUILD_URL}",
-                     to: "1501145@eng.asu.edu.eg"
+            emailext (
+                subject: "SUCCESS: Pipeline '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
+                body: """
+                    Pipeline '${env.JOB_NAME}' (${env.BUILD_NUMBER}) completed successfully!
+                    Check the build details at: ${env.BUILD_URL}
+                """,
+                to: "heshanperera41197@gmail.com", // Replace with your email
+                attachLog: true // Attach the build log to the email
+            )
         }
         failure {
-            emailext subject: "Jenkins Build FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     body: "Oops! The build failed ;( Check logs: ${env.BUILD_URL}",
-                     to: "1501145@eng.asu.edu.eg"
+            emailext (
+                subject: "FAILURE: Pipeline '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
+                body: """
+                    Pipeline '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed!
+                    Check the build details at: ${env.BUILD_URL}
+                """,
+                to: "heshanperera41197@gmail.com", // Replace with your email
+                attachLog: true // Attach the build log to the email
+            )
         }
     }
 }
