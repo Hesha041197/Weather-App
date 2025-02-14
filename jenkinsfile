@@ -77,8 +77,8 @@ pipeline {
                 }
             }
         }
-    }
 
+        // Stage 6: Run Ansible Playbook
         stage('Cleanup') {
             steps {
                 script {
@@ -86,6 +86,8 @@ pipeline {
                 }
             }
         }
+    }
+
 
     post {
         success {
