@@ -13,6 +13,8 @@ This project automates the deployment of a **Weather App** using a **CI/CD pipel
    - [Jenkins Pipeline Setup](#jenkins-pipeline-setup)
    - [Ansible Inventory Configuration](#ansible-inventory-configuration)
    - [Docker Hub Configuration](#docker-hub-configuration)
+   - [Email Notifications](#email-notifications)
+   - [GitHub Push Trigger](#github-push-trigger)
 5. [Pipeline Workflow](#pipeline-workflow)
 6. [Usage](#usage)
 7. [Troubleshooting](#troubleshooting)
@@ -30,6 +32,8 @@ This project demonstrates a **CI/CD pipeline** for deploying a **Weather App**. 
 3. **Push to Docker Hub**: Pushes the Docker image to Docker Hub.
 4. **Deploy with Ansible**: Deploys the Docker image to target servers using Ansible.
 5. **Cleanup**: Removes unused Docker resources to free up disk space.
+6. **Email Notifications**: Sends email notifications on pipeline success or failure.
+7. **GitHub Push Trigger**: Automatically triggers the pipeline on any push to the GitHub repository.
 
 ---
 
@@ -53,6 +57,8 @@ Before setting up the project, ensure the following are installed and configured
      - Git
      - Docker Pipeline
      - Credentials Binding
+     - Email Extension Plugin
+     - GitHub Plugin
 
 2. **Docker**:
    - Docker installed on the Jenkins agent and target servers.
@@ -69,6 +75,9 @@ Before setting up the project, ensure the following are installed and configured
 6. **Docker Hub Account**:
    - A Docker Hub account for pushing Docker images.
 
+7. **SMTP Server**:
+   - Access to an SMTP server for sending email notifications (e.g., Gmail, Outlook).
+
 ---
 
 ## Setup Instructions
@@ -83,6 +92,7 @@ Before setting up the project, ensure the following are installed and configured
    - Add the following credentials in Jenkins:
      - **Git Credentials**: For accessing the Git repository.
      - **Docker Hub Credentials**: For pushing Docker images to Docker Hub.
+     - **SMTP Credentials**: For sending email notifications.
 
 3. **Configure Environment Variables**:
    - Set the following environment variables in the pipeline:
@@ -124,6 +134,41 @@ Before setting up the project, ensure the following are installed and configured
 
 ---
 
+### Email Notifications
+
+1. **Install Email Extension Plugin**:
+   - Go to **Jenkins > Manage Jenkins > Manage Plugins**.
+   - Install the **Email Extension Plugin**.
+
+2. **Configure SMTP Server**:
+   - Go to **Jenkins > Manage Jenkins > Configure System**.
+   - Scroll down to the **Extended E-mail Notification** section.
+   - Configure the SMTP server settings (e.g., Gmail SMTP).
+
+3. **Add Email Notifications to Pipeline**:
+   - The `Jenkinsfile` includes email notifications for pipeline success and failure.
+
+---
+
+### GitHub Push Trigger
+
+1. **Install GitHub Plugin**:
+   - Go to **Jenkins > Manage Jenkins > Manage Plugins**.
+   - Install the **GitHub Plugin**.
+
+2. **Configure GitHub Webhook**:
+   - Go to your GitHub repository settings.
+   - Add a webhook with the following details:
+     - **Payload URL**: `http://<your-jenkins-server>/github-webhook/`
+     - **Content type**: `application/json`
+     - **Secret**: (Optional) Add a secret for secure communication.
+     - **Events**: Select **Just the push event**.
+
+3. **Enable GitHub Trigger in Pipeline**:
+   - The `Jenkinsfile` includes a `triggers` block to enable GitHub push triggers.
+
+---
+
 ## Pipeline Workflow
 
 The Jenkins pipeline consists of the following stages:
@@ -143,6 +188,9 @@ The Jenkins pipeline consists of the following stages:
 5. **Cleanup**:
    - Removes unused Docker resources.
 
+6. **Email Notifications**:
+   - Sends email notifications on pipeline success or failure.
+
 ---
 
 ## Usage
@@ -160,6 +208,9 @@ The Jenkins pipeline consists of the following stages:
      curl http://192.168.56.14:8080
      ```
 
+4. **Email Notifications**:
+   - Check your email inbox for success or failure notifications.
+
 ---
 
 ## Troubleshooting
@@ -176,6 +227,14 @@ The Jenkins pipeline consists of the following stages:
 3. **Ansible Playbook Failed**:
    - Check the Ansible playbook logs for errors.
    - Ensure the target servers are reachable and have Docker installed.
+
+4. **Email Notifications Not Sent**:
+   - Verify the SMTP server configuration in Jenkins.
+   - Check the Jenkins logs for email-related errors.
+
+5. **GitHub Push Trigger Not Working**:
+   - Ensure the GitHub webhook is correctly configured.
+   - Verify the Jenkins GitHub plugin is installed and configured.
 
 ---
 
