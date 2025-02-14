@@ -17,7 +17,7 @@ pipeline {
                 git(
                     url: 'https://github.com/Hesha041197/Weather-App.git',  // URL of the Git repository
                     credentialsId: 'git-credentials',  // Jenkins credentials ID for Git (username and token/password)
-                    branch: 'main'  // Branch to checkout (replace with your branch name)
+                    branch: 'main'  // Branch to checkout
                 )
                 // This step clones the Git repository into the Jenkins workspace.
                 // The `credentialsId` ensures secure access to the repository.
@@ -78,11 +78,12 @@ pipeline {
             }
         }
 
-        // Stage 6: Run Ansible Playbook
+        // Stage 6: Cleanup
         stage('Cleanup') {
             steps {
                 script {
                     sh "docker system prune -f"
+                    //This command removed unused docker objects to free up disk space and keep the system clean.
                 }
             }
         }
