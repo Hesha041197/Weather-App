@@ -87,7 +87,7 @@ pipeline {
         }
         failure {
             emailext subject: "Jenkins Build FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     body: "Oops! The build failed. Check logs: ${env.BUILD_URL}",
+                     body: "Oops! The build failed ;( Check logs: ${env.BUILD_URL}",
                      to: "1501145@eng.asu.edu.eg"
         }
     }
