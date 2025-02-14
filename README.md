@@ -204,8 +204,8 @@ The Jenkins pipeline consists of the following stages:
 3. **Verify Deployment**:
    - Verify the Weather App is running on the target servers:
      ```bash
-     curl http://192.168.56.15:8080
-     curl http://192.168.56.14:8080
+     curl http://192.168.56.15:5000
+     curl http://192.168.56.14:5000
      ```
 
 4. **Email Notifications**:
@@ -258,6 +258,6 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 For questions or feedback, please contact:
 
-- **Name**: Heshan Perera
-- **Email**: heshanperera41197@gmail.com
+- **Name**: Muhammad Ahmad Hesham
+- **Email**: 1501145@eng.asu.edu.eg
 - **GitHub**: [Hesha041197](https://github.com/Hesha041197)
