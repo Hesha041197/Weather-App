@@ -80,16 +80,15 @@ pipeline {
     }
 
     post {
-        // Post-build actions
         success {
-            echo 'Pipeline completed successfully!'
-            // This block runs if the pipeline completes without errors.
-            // You can add additional actions here, such as sending notifications.
+            emailext subject: "Jenkins Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                     body: "Good news! The build succeeded. View details: ${env.BUILD_URL}",
+                     to: "1501145@eng.asu.edu.eg"
         }
         failure {
-            echo 'Pipeline failed!'
-            // This block runs if the pipeline fails at any stage.
-            // You can add additional actions here, such as sending failure notifications.
+            emailext subject: "Jenkins Build FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                     body: "Oops! The build failed. Check logs: ${env.BUILD_URL}",
+                     to: "1501145@eng.asu.edu.eg"
         }
     }
 }
