@@ -1,13 +1,9 @@
-# Define build arguments (only available during build time)
-ARG IMAGE_NAME=weather-app
-ARG IMAGE_TAG=latest
-
 # Use an official Python runtime as a parent image
 FROM python:slim
 
 # Set static labels using build-time ARG (proper syntax)
-ARG IMAGE_NAME
-ARG IMAGE_TAG
+ARG IMAGE_NAME=weather-app
+ARG IMAGE_TAG=latest
 LABEL name=${IMAGE_NAME} version=${IMAGE_TAG}
 
 # Convert ARG to ENV so it persists at runtime
