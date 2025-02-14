@@ -88,7 +88,7 @@ pipeline {
                     Check the build details at: ${env.BUILD_URL}
                 """,
                 to: "1501145@eng.asu.edu.eg"
-                attachLog: true // Attach the build log to the email
+                attachBuildLog: true // Attach the build log to the email
             )
         }
         failure {
@@ -99,7 +99,7 @@ pipeline {
                     Check the build details at: ${env.BUILD_URL}
                 """,
                 to: "1501145@eng.asu.edu.eg"
-                attachLog: true // Attach the build log to the email
+                attachBuildLog: true // Attach the build log to the email
             )
         }
     }
