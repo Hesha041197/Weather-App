@@ -4,7 +4,7 @@
   become: yes  # Execute tasks with elevated privileges (sudo)
 
   tasks:
-    # Task 0: Install Python (if not already installed)
+    # Task 1: Install Python (if not already installed)
     - name: Ensure Python is installed
       raw: sudo yum install -y python3
       when: ansible_python_interpreter is not defined
@@ -12,13 +12,13 @@
       # This is necessary because Ansible requires Python to run its modules.
       # Once Python is installed, Ansible can use its regular modules for subsequent tasks.
 
-    # Task 1: Update the yum package cache
+    # Task 2: Update the yum package cache
     - name: Update yum cache
       yum:
         update_cache: yes
       # This ensures that the package list is up-to-date before installing any packages.
 
-    # Task 2: Install required system packages for Docker
+    # Task 3: Install required system packages for Docker
     - name: Install required system packages
       yum:
         name:
@@ -28,7 +28,7 @@
         state: present
       # These packages are prerequisites for adding and using the Docker repository.
 
-    # Task 3: Add Docker's official repository
+    # Task 4: Add Docker's official repository
     - name: Add Docker repository
       yum_repository:
         name: docker-ce
@@ -39,14 +39,14 @@
         enabled: yes
       # This adds the Docker repository to the system's package sources, allowing yum to install Docker.
 
-    # Task 4: Install Docker Community Edition (CE)
+    # Task 5: Install Docker Community Edition (CE)
     - name: Install Docker
       yum:
         name: docker-ce
         state: present
       # This installs the Docker Community Edition, which is the free version of Docker.
 
-    # Task 5: Ensure the Docker service is running and enabled on boot
+    # Task 6: Ensure the Docker service is running and enabled on boot
     - name: Ensure Docker service is running
       service:
         name: docker
@@ -54,19 +54,19 @@
         enabled: yes
       # This ensures that the Docker service is running and will start automatically on system boot.
 
-    # Task 6: Pull the Docker image from Docker Hub
+    # Task 7: Pull the Docker image from Docker Hub
     - name: Pull Docker image from Docker Hub
       docker_image:
         name: kryllion/weather-app:latest
         source: pull
       # This pulls the specified Docker image from Docker Hub to the target machine.
 
-    # Task 7: Run the Docker container from the pulled image
+    # Task 8: Run the Docker container from the pulled image
     - name: Run Docker container
       docker_container:
         name: weather-app
         image: kryllion/weather-app:latest
         state: started
         ports:
-          - "8080:80"  # Map host port 8080 to container port 80 (adjust as needed)
+          - "8080:80"  # Map host port 8080 to container port 80
       # This runs a Docker container using the specified image and maps port 8080 on the host to port 80 in the container.
