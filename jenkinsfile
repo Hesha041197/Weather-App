@@ -87,7 +87,7 @@ pipeline {
                     Pipeline '${env.JOB_NAME}' (${env.BUILD_NUMBER}) completed successfully!
                     Check the build details at: ${env.BUILD_URL}
                 """,
-                to: "heshanperera41197@gmail.com", // Replace with your email
+                to: "1501145@eng.asu.edu.eg"
                 attachLog: true // Attach the build log to the email
             )
         }
@@ -98,7 +98,7 @@ pipeline {
                     Pipeline '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed!
                     Check the build details at: ${env.BUILD_URL}
                 """,
-                to: "heshanperera41197@gmail.com", // Replace with your email
+                to: "1501145@eng.asu.edu.eg"
                 attachLog: true // Attach the build log to the email
             )
         }
