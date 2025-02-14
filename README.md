@@ -200,6 +200,7 @@ The Jenkins pipeline consists of the following stages:
 
 2. **Monitor the Pipeline**:
    - Monitor the pipeline execution in the Jenkins dashboard.
+   ![Pipeline Succussful Execution](./screenshots/pipeline_success.png)
 
 3. **Verify Deployment**:
    - Verify the Weather App is running on the target servers:
@@ -207,9 +208,13 @@ The Jenkins pipeline consists of the following stages:
      curl http://192.168.56.15:5000
      curl http://192.168.56.14:5000
      ```
+     
+     ![Website on first IP](./screenshots/website_ip1.png)
+     ![Website on first IP](./screenshots/website_ip2.png)
 
 4. **Email Notifications**:
    - Check your email inbox for success or failure notifications.
+   ![Success E-mail](./screenshots/email_notification.png)
 
 ---
 
