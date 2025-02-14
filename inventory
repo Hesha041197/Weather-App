@@ -1,0 +1,3 @@
+[webservers]
+192.168.56.15 ansible_user=vagrant ansible_private_key_file=./private_keys/m01/private_key
+192.168.56.14 ansible_user=vagrant ansible_private_key_file=./private_keys/m02/private_key

@@ -1,0 +1,84 @@
+pipeline {
+    agent any  // Use any available agent to run this pipeline
+
+    environment {
+        // Environment variables for the pipeline
+        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')  // Jenkins credentials ID for Docker Hub
+        GIT_CREDENTIALS = credentials('git-credentials')  // Jenkins credentials ID for Git
+        DOCKER_IMAGE_NAME = "kryllion/weather-app"  // Docker Hub image name
+        DOCKER_IMAGE_TAG = "latest"  // Docker image tag (default is 'latest')
+        ANSIBLE_INVENTORY = "inventory"  // Path to the Ansible inventory file
+    }
+
+    stages {
+        // Stage 1: Pull code from Git repository
+        stage('Checkout Git Repository') {
+            steps {
+                git(
+                    url: 'https://github.com/Hesha041197/Weather-App.git',  // URL of the Git repository
+                    credentialsId: 'git-credentials',  // Jenkins credentials ID for Git (username and token/password)
+                    branch: 'main'  // Branch to checkout (replace with your branch name)
+                )
+                // This step clones the Git repository into the Jenkins workspace.
+                // The `credentialsId` ensures secure access to the repository.
+            }
+        }
+
+        // Stage 2: Build Docker image
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
+                    // This command builds a Docker image using the Dockerfile in the current directory (`.`).
+                    // The `-t` flag tags the image with the name and tag specified in the environment variables.
+                    // Example: `docker build -t kryllion/weather-app:latest .`
+                }
+            }
+        }
+
+        // Stage 3: Push Docker image to Docker Hub
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
+                        // The `withCredentials` block securely retrieves Docker Hub credentials from Jenkins.
+                        // `docker-hub-credentials` is the Jenkins credentials ID for Docker Hub.
+                        sh "echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USERNAME} --password-stdin"
+                        // This command logs into Docker Hub using the provided credentials.
+                        // The password is passed via `stdin` for security.
+
+                        sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+                        // This command pushes the Docker image to Docker Hub.
+                        // Example: `docker push kryllion/weather-app:latest`
+                    }
+                }
+            }
+        }
+
+        // Stage 4: Run Ansible Playbook
+        stage('Run Ansible Playbook') {
+            steps {
+                script {
+                    sh "ansible-playbook -i ${ANSIBLE_INVENTORY} playbook.yml"
+                    // This command runs the Ansible playbook (`playbook.yml`) using the specified inventory file (`inventory`).
+                    // The `-i` flag specifies the path to the inventory file.
+                    // Example: `ansible-playbook -i inventory playbook.yml`
+                }
+            }
+        }
+    }
+
+    post {
+        // Post-build actions
+        success {
+            echo 'Pipeline completed successfully!'
+            // This block runs if the pipeline completes without errors.
+            // You can add additional actions here, such as sending notifications.
+        }
+        failure {
+            echo 'Pipeline failed!'
+            // This block runs if the pipeline fails at any stage.
+            // You can add additional actions here, such as sending failure notifications.
+        }
+    }
+}
