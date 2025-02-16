@@ -28,7 +28,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
+                    sh "sudo docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
                     // This command builds a Docker image using the Dockerfile in the current directory (`.`).
                     // The `-t` flag tags the image with the name and tag specified in the environment variables.
                     // Example: `docker build -t kryllion/weather-app:latest .`
@@ -47,7 +47,7 @@ pipeline {
                         // This command logs into Docker Hub using the provided credentials.
                         // The password is passed via `stdin` for security.
 
-                        sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+                        sh "sudo docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
                         // This command pushes the Docker image to Docker Hub.
                         // Example: `docker push kryllion/weather-app:latest`
                     }
@@ -82,7 +82,7 @@ pipeline {
         stage('Cleanup') {
             steps {
                 script {
-                    sh "docker system prune -f"
+                    sh "sudo docker system prune -f"
                     //This command removed unused docker objects to free up disk space and keep the system clean.
                 }
             }
