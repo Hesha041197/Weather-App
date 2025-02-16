@@ -12,11 +12,12 @@ pipeline {
 
     stages {
     	// Stage 0: Clean the workspace
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
+        // stage('Clean Workspace') {
+        //    steps {
+        //        cleanWs()
+        //    }
+       // }
+       
         // Stage 1: Pull code from Git repository
         stage('Checkout Git Repository') {
             steps {
