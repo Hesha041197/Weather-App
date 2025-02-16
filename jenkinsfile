@@ -11,6 +11,12 @@ pipeline {
     }
 
     stages {
+    	// Stage 0: Clean the workspace
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
         // Stage 1: Pull code from Git repository
         stage('Checkout Git Repository') {
             steps {
@@ -93,7 +99,7 @@ pipeline {
     post {
         success {
             emailext (
-                subject: "SUCCESS! Pipeline '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
+                subject: "SUCCESS: Pipeline '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
                 body: """
                     Pipeline '${env.JOB_NAME}' (${env.BUILD_NUMBER}) completed successfully!
                     Check the build details at: ${env.BUILD_URL}
